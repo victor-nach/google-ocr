@@ -1,18 +1,17 @@
 const { config } = require('dotenv');
 config();
 
-async function quickstart() {
-  // Imports the Google Cloud client library
-  const vision = require('@google-cloud/vision');
+const vision = require('@google-cloud/vision');
 
-  // Creates a client
-  const client = new vision.ImageAnnotatorClient();
+// Creates a client
+const client = new vision.ImageAnnotatorClient();
+const fileName = 'handwritting.png';
 
-  // Performs label detection on the image file
-  const [result] = await client.labelDetection('handwritting.png');
-  const labels = result.labelAnnotations;
-  console.log('Labels:');
-  labels.forEach(label => console.log(label.description));
-}
-
-quickstart();
+// Performs text detection on the local file
+( async () => {
+  const [result] = await client.textDetection(fileName);
+  console.log(result);
+  const detections = result.textAnnotations;
+  console.log('Text:');
+  detections.forEach(text => console.log(text));
+})();
